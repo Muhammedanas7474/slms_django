@@ -1,0 +1,89 @@
+{% extends "homepage.html" %}
+{% load static %}
+
+{% block title %}Student Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Student Dashboard</h2>
+    
+    {% if student %}
+    <div class="card mx-auto" style="max-width: 600px;">
+        <div class="card-header text-center">
+            <h4>{{ student.username }}'s Profile</h4>
+        </div>
+        <div class="card-body">
+            <div class="text-center mb-3">
+                {% if student.profile_pic and student.profile_pic.name %}
+                    <img src="{{ student.profile_pic.url }}" class="rounded-circle" alt="Profile Pic" width="120" height="120">
+                {% else %}
+                    <img src="{% static 'default_profile.png' %}" class="rounded-circle" alt="Profile Pic" width="120" height="120">
+                {% endif %}
+            </div>
+
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>Username:</strong> {{ student.username }}</li>
+                <li class="list-group-item"><strong>Email:</strong> {{ student.email }}</li>
+                <li class="list-group-item"><strong>Phone:</strong> {{ student.phone }}</li>
+                <li class="list-group-item"><strong>Date of Birth:</strong> {{ student.dob }}</li>
+                <li class="list-group-item"><strong>Department:</strong> {{ student.dept }}</li>
+                <li class="list-group-item"><strong>Age:</strong> {{ student.age }}</li>
+                <li class="list-group-item"><strong>Year of Admission:</strong> {{ student.year_of_admission }}</li>
+                <li class="list-group-item"><strong>Roll No:</strong> {{ student.rollno }}</li>
+            </ul>
+
+            <div class="mt-4 text-center">
+                <a href="{% url 'student_update' %}" class="btn btn-primary me-2">Edit Profile</a>
+                <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add-On Courses Section -->
+    <h3 class="mt-5 text-center">Add-On Courses</h3>
+    <table class="table table-bordered table-striped mt-3">
+        <thead>
+            <tr>
+                <th>Course Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Status / Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for course in courses %}
+            <tr>
+                <td>{{ course.course_name }}</td>
+                <td>{{ course.course_desc }}</td>
+                <td>{{ course.course_price }}</td>
+                <td>
+                    {% if course.id in purchased_course_ids %}
+                        {% for purchase in purchased_courses %}
+                            {% if purchase.course.id == course.id %}
+                                {% if purchase.status == "Pending" %}
+                                    <span class="text-warning fw-bold">Pending Approval</span>
+                                {% elif purchase.status == "Approved" %}
+                                    <a href="{% url 'mark_course_complete' purchase.id %}" class="btn btn-primary btn-sm">Mark Completed</a>
+                                {% elif purchase.status == "Completed" %}
+                                    <span class="text-success fw-bold">Completed</span>
+                                {% elif purchase.status == "Rejected" %}
+                                    <span class="text-danger fw-bold">Rejected</span>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <a href="{% url 'purchase_course' course.id %}" class="btn btn-success btn-sm">Purchase</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4" class="text-center text-muted">No add-on courses available.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% else %}
+        <p class="text-center text-danger">No student details found.</p>
+    {% endif %}
+</div>
+{% endblock %}

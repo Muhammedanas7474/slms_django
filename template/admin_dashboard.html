@@ -1,0 +1,162 @@
+{% extends 'admin_base.html' %}
+{% block title %}Admin Dashboard{% endblock title %}
+
+{% block content %}
+<h2 class="mb-4 text-center fw-bold">Admin Dashboard</h2>
+
+<!-- Students Table -->
+<div class="card mb-5 shadow-sm">
+    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">All Students</h5>
+        <a href="{% url 'admin_add_student' %}" class="btn btn-success btn-sm">Add Student</a>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Roll No</th>
+                    <th>Username</th>
+                    <th>Department</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td>{{ student.rollno }}</td>
+                    <td>{{ student.username }}</td>
+                    <td>{{ student.dept }}</td>
+                    <td>{{ student.email }}</td>
+                    <td>{{ student.phone }}</td>
+                    <td>
+                        <a href="{% url 'admin_edit_student' student.id %}" class="btn btn-primary btn-sm">Edit</a>
+                        <a href="{% url 'admin_delete_student' student.id %}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this student?');">Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center text-muted">No students found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Departments Table -->
+<div class="card shadow-sm mb-5">
+    <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">All Departments</h5>
+        <a href="{% url 'admin_add_course' %}" class="btn btn-success btn-sm">Add Department</a>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Department Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for dept in departments %}
+                <tr>
+                    <td>{{ dept.id }}</td>
+                    <td>{{ dept.dept_name }}</td>
+                    <td>
+                        <a href="{% url 'admin_edit_department' dept.id %}" class="btn btn-primary btn-sm">Edit</a>
+                        <a href="{% url 'admin_delete_department' dept.id %}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this department?');">Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" class="text-center text-muted">No departments found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Add-On Courses Table -->
+<div class="card shadow-sm mb-5">
+    <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">All Add-On Courses</h5>
+        <a href="{% url 'addoncourse' %}" class="btn btn-success btn-sm">Add Course</a>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Course Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in course %}
+                <tr>
+                    <td>{{ c.id }}</td>
+                    <td>{{ c.course_name }}</td>
+                    <td>{{ c.course_description }}</td>
+                    <td>{{ c.course_price }}</td>
+                    <td>
+                        <a href="{% url 'admin_edit_on_course' c.id %}" class="btn btn-primary btn-sm">Edit</a>
+                        <a href="{% url 'admin_delete_on_course' c.id %}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this course?');">Delete</a>
+                    </td> 
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center text-muted">No add-on courses found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Purchased Courses Table -->
+<div class="card shadow-sm">
+    <div class="card-header bg-warning text-white d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Purchased Courses</h5>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Username</th>
+                    <th>Course Name</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for purchase in purchased_course %}
+                <tr>
+                    <td>{{ purchase.student.username }}</td>
+                    <td>{{ purchase.course.course_name }}</td>
+                    <td>{{ purchase.status }}</td>
+                    <td>
+                        {% if purchase.status == "Pending" %}
+                            <a href="{% url 'approve_course' purchase.id %}" class="btn btn-success btn-sm">Approve</a>
+                            <a href="{% url 'reject_course' purchase.id %}" class="btn btn-danger btn-sm">Reject</a>
+                        {% else %}
+                            <span class="text-muted">No Action</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center text-muted">No purchased courses yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock content %}
