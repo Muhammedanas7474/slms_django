@@ -17,9 +17,9 @@ def Register(request):
     if request.method == "POST":
         form = RegistrationForm(request.POST, request.FILES)
         if form.is_valid():
-            student = form.save()  # Save and get the instance
+            student = form.save()  
 
-            # Send welcome email
+            
             subject = "Welcome to College Portal"
             message = f"Hello {student.username},\n\nThank you for registering at our College Portal.\n\nYour account has been created successfully.\nYou can now log in and explore available courses.\n\nBest regards,\nCollege Admin"
             from_email = settings.DEFAULT_FROM_EMAIL
@@ -49,7 +49,7 @@ def Login(request):
                 if user.is_staff:
                     return redirect('admin_home')
                 else:
-                    return redirect('homepage')  # URL name of your homepage
+                    return redirect('homepage')  
             else:
                 form.add_error(None, "Invalid username or password")
     else:

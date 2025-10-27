@@ -7,7 +7,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 
 
-# Create your views here.
+
 # @login_required
 def Adminhome(request):
     return render(request,'admin_base.html')
@@ -29,9 +29,9 @@ def AdminAddStudent(request):
     if request.method == 'POST':
         form = AdminStudentForm(request.POST)
         if form.is_valid():
-            student = form.save()  # Save and get the student instance
+            student = form.save()  
 
-            # Send email
+            
             subject = "Welcome to College Portal"
             message = f"Hello {student.username},\n\nYour student account has been created successfully!\n\nUsername: {student.username}\nEmail: {student.email}\n\nPlease login to the portal."
             from_email = settings.DEFAULT_FROM_EMAIL
@@ -138,7 +138,7 @@ def approve_course(request, purchase_id):
         purchase.status = "Approved"
         purchase.save()
         
-        # Send email to student
+        
         student_email = purchase.student.email
         subject = "Course Approved"
         message = f"Hello {purchase.student.username},\n\nYour request to purchase the course '{purchase.course.course_name}' has been approved by the admin.\n\nYou can now access the course on your dashboard."

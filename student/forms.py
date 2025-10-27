@@ -13,7 +13,8 @@ class RegistrationForm(forms.ModelForm):
             "dept", "profile_pic", "age", "password"
         ]
         widgets = {
-            "dob": forms.DateInput(attrs={"type": "date"}),  
+            "dob": forms.DateInput(attrs={"type": "date"}),
+            "password": forms.PasswordInput(attrs={"placeholder": "Enter password"}),  
         }
 
     def clean_username(self):
@@ -30,11 +31,11 @@ class RegistrationForm(forms.ModelForm):
 
     def save(self, commit=True):
         student = super().save(commit=False)
-        
         student.password = make_password(self.cleaned_data['password'])
         if commit:
             student.save()
         return student
+
 
     
 class Loginform(forms.Form):

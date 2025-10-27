@@ -18,9 +18,11 @@ from django.contrib import admin
 from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
+from student import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.Homepage, name='homepage'),
     path('student/',include('student.urls')),
     path('admin1/',include('principal.urls'))
 ]

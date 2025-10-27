@@ -15,6 +15,14 @@
                     <div class="mb-3">
                         <label class="form-label">{{ field.label }}</label>
                         {{ field }}
+                        
+                        {% if field.name == "password" %}
+                            <div class="form-check mt-1">
+                                <input type="checkbox" class="form-check-input" id="showPasswordCheck">
+                                <label class="form-check-label" for="showPasswordCheck">Show Password</label>
+                            </div>
+                        {% endif %}
+
                         {% if field.errors %}
                             <div class="text-danger">
                                 {% for error in field.errors %}
@@ -34,4 +42,20 @@
         </div>
     </div>
 </div>
+
+<!-- ✅ Add this JavaScript at the end -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const passwordInput = document.querySelector('input[name="password"]');
+    const checkbox = document.getElementById("showPasswordCheck");
+
+    checkbox.addEventListener("change", function() {
+        if (this.checked) {
+            passwordInput.type = "text";
+        } else {
+            passwordInput.type = "password";
+        }
+    });
+});
+</script>
 {% endblock %}
