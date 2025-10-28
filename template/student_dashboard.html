@@ -54,7 +54,7 @@
             {% for course in courses %}
             <tr>
                 <td>{{ course.course_name }}</td>
-                <td>{{ course.course_desc }}</td>
+                <td>{{ course.course_description }}</td>
                 <td>{{ course.course_price }}</td>
                 <td>
                     {% if course.id in purchased_course_ids %}
