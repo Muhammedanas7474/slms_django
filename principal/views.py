@@ -21,7 +21,8 @@ def Admindashboard(request):
     course=AddOnCourse.objects.all()
     purchased_course=CoursePurchase.objects.all()
     return render(request,'admin_dashboard.html',{"students":students,
-                                                  "departments":departments,"course":course,
+                                                  "departments":departments,
+                                                  "course":course,
                                                   "purchased_course":purchased_course})
 
 
